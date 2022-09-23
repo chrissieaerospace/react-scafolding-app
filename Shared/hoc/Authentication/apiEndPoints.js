@@ -73,4 +73,4 @@ export const LOGOUT_API = {
   [API_METHOD]: API_METHODS.POST,
 };
 
-export const dontResetOnLogout = {};
+export const DONT_RESET_ON_LOGOUT_API_KEYS = {};
