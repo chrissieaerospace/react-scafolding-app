@@ -4,12 +4,11 @@ import {
   HOC_MAIN_CLIENT_SIDE_CONFIG_DEFAULT,
   HOC_MAIN_CONFIG_KEY,
   TYPE_BOOLEAN,
+  ENV,
 } from 'react-boilerplate-redux-saga-hoc/constants';
 
-const DEVELOPMENT = 'development';
-
 const IS_DEVELOPMENT =
-  process.env.NODE_ENV === DEVELOPMENT ||
+  process.env.NODE_ENV === ENV.DEVELOPMENT ||
   (typeOf(__DEV__) === TYPE_BOOLEAN && __DEV__);
 
 const EXTRA_CONFIG = {
