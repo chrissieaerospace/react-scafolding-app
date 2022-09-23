@@ -88,7 +88,7 @@ const App = () => {
     reducerName,
     reducerConstants: { GET_USER_PROFILE_API },
   } = useAuthenticationHoc();
-  const mutateReducer = useMutateReducer(reducerName);
+  const mutateReducerState = useMutateReducer(reducerName);
   const [currentRoute, setCurrentRoute] = useState();
   const [isOffline, setIsOffline] = useState(null);
   const [profile, isLoggedIn] = useQuery(reducerName, [
@@ -109,14 +109,14 @@ const App = () => {
               }
               // setIsRetry(false);
             }
-            mutateReducer(() => ({
+            mutateReducerState(() => ({
               isOffline: false,
             }));
             return false;
           });
         } else {
           setIsOffline(true);
-          mutateReducer(() => ({
+          mutateReducerState(() => ({
             isOffline: true,
           }));
         }
