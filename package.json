@@ -18,7 +18,7 @@
     "add": "^2.0.6",
     "axios": "^0.27.2",
     "react": "18.1.0",
-    "react-boilerplate-redux-saga-hoc": "^1.7.35",
+    "react-boilerplate-redux-saga-hoc": "^1.7.40",
     "react-native": "0.70.1",
     "react-native-safe-area-context": "^4.3.4",
     "react-native-screens": "^3.17.0",
