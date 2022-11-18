@@ -29,6 +29,12 @@ buildscript {
 }
 
 allprojects {
+    configurations.all {
+        resolutionStrategy {
+            // Remove this override in 0.66, as a proper fix is included in react-native itself.
+            force "com.facebook.react:react-native:0.70.1"
+        }
+    }
     repositories {
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
