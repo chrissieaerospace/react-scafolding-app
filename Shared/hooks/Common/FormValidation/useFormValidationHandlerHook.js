@@ -5,20 +5,23 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-underscore-dangle */
 import { useState, useCallback, useRef } from 'react';
-import { newObject,generateTimeStamp } from 'react-boilerplate-redux-saga-hoc/utils';
+import {
+  newObject,
+  generateTimeStamp,
+} from 'react-boilerplate-redux-saga-hoc/utils';
 // import isEqual from 'lodash/isEqual';
 import { ON_CHANGE, ON_BLUR, VALUE, ERROR } from './constants';
 import { trimStrings } from '../../../utils/utilFunctions';
 import Validator from './validator';
 
-const getPlatformBasedFieldValue = e =>
+const getPlatformBasedFieldValue = (e) =>
   e &&
   typeof e === 'object' &&
   e.target &&
   typeof e.preventDefault === 'function'
     ? e.target.value
     : e;
-const getPlatformBasedFieldName = e =>
+const getPlatformBasedFieldName = (e) =>
   e &&
   typeof e === 'object' &&
   e.target &&
@@ -43,7 +46,10 @@ const useFormValidationHandlerHook = ({
       (acc, [key, val = {}]) =>
         newObject(acc, {
           [key]:
-            initialValues[key] ||
+            (typeof initialValues[key] !== 'undefined' &&
+              (typeof initialValues[key] === 'function'
+                ? initialValues[key]()
+                : initialValues[key])) ||
             (typeof val.default !== 'undefined' ? val.default : ''),
         }),
       {},
@@ -65,7 +71,7 @@ const useFormValidationHandlerHook = ({
         maxError =
           typeof (config.message && config.message.maxLength) !== 'undefined'
             ? config.message.maxLength
-            : `maximum ${config.message.maxLength} characters are allowed`;
+            : `maximum ${config.maxLength} characters are allowed`;
         value = value.slice(0, config.maxLength);
         // return;
       }
@@ -111,20 +117,20 @@ const useFormValidationHandlerHook = ({
               : 'Please enter valid number';
         else if (config.allowOnlyNumber)
           if (!Number.isNaN(+value))
-            setValues(_value => newObject(_value, { [key]: value }));
+            setValues((_value) => newObject(_value, { [key]: value }));
           else
             error =
               typeof (config.message && config.message.allowOnlyNumber) !==
               'undefined'
                 ? config.message && config.message.allowOnlyNumber
                 : 'Only numbers are allowed';
-        else setValues(_value => newObject(_value, { [key]: value }));
+        else setValues((_value) => newObject(_value, { [key]: value }));
 
       if (!isSetError) return { error, value, key };
 
       if (key)
-        if (error) setErrors(_errors => newObject(_errors, { [key]: error }));
-        else setErrors(_errors => newObject(_errors, { [key]: null }));
+        if (error) setErrors((_errors) => newObject(_errors, { [key]: error }));
+        else setErrors((_errors) => newObject(_errors, { [key]: null }));
 
       return { error, value, key };
     },
@@ -265,21 +271,28 @@ const useFormValidationHandlerHook = ({
     [],
   );
 
-  const onAddFormConfig = useCallback((config, isNew, isReset) => {
-    setFormConfig(_formConfig =>
-      newObject({}, isNew ? {} : _formConfig, config),
+  const onAddFormConfig = useCallback((config, isReset, _values = {}) => {
+    setFormConfig((_formConfig) =>
+      newObject({}, isReset ? {} : _formConfig, config),
     );
     const newVal = Object.entries(config || {}).reduce(
-      (acc, [key, val = {}]) =>
+      (acc, [key, _config = {}]) =>
         newObject(acc, {
           [key]:
-            initialValues[key] ||
+            _values[key] ||
+            (typeof initialValues[key] !== 'undefined' &&
+              (typeof initialValues[key] === 'function'
+                ? initialValues[key]()
+                : initialValues[key])) ||
             (!isReset && formRef.current.values[key]) ||
-            (typeof val.default !== 'undefined' ? val.default : ''),
+            (typeof _config.default !== 'undefined' ? _config.default : ''),
         }),
       {},
     );
-    setValues(_val => ({ ..._val, ...newVal }));
+    if (isReset) {
+      setValues(newVal);
+      setErrors({});
+    } else setValues((_val) => ({ ..._val, ...newVal }));
   }, []);
 
   const commonInputProps = useCallback(
@@ -295,15 +308,16 @@ const useFormValidationHandlerHook = ({
         } = {},
       } = {},
     ) => ({
-      [onChange]: e => onChangeValues(e, key, config),
-      [onBlur]: e => onBlurValues(e, key, config),
+      [onChange]: (e) => onChangeValues(e, key, config),
+      [onBlur]: (e) => onBlurValues(e, key, config),
       [value]: formRef.current.values[key],
       [error]: formRef.current.errors[key],
+      keyName: key,
     }),
     [],
   );
 
-  const setInitialFormData = useCallback(data => {
+  const setInitialFormData = useCallback((data) => {
     const _values = Object.keys(formRef.current.formConfig).reduce(
       (acc, key) =>
         newObject(acc, {
@@ -322,7 +336,10 @@ const useFormValidationHandlerHook = ({
       (acc, [key, val = {}]) =>
         newObject(acc, {
           [key]:
-            initialValues[key] ||
+            (typeof initialValues[key] !== 'undefined' &&
+              (typeof initialValues[key] === 'function'
+                ? initialValues[key]()
+                : initialValues[key])) ||
             (typeof val.default !== 'undefined' ? val.default : ''),
         }),
       {},
@@ -390,3 +407,17 @@ export default useFormValidationHandlerHook;
     },
   };
 */
+
+/**
+ * @Available props <useFormValidationHandlerHook>
+ * setInitialFormData
+ * commonInputProps
+ * onChangeValues
+ * onBlurValues
+ * validateForm
+ * setValues
+ * setErrors
+ * formRef
+ * errors
+ * values
+ */

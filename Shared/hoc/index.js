@@ -7,6 +7,8 @@ export {
   useMutateReducer,
   newObject,
   toPromise,
+  useCancelAllRunningApiCalls,
+  useMutation,
 } from 'react-boilerplate-redux-saga-hoc/utils';
 export { CustomError } from './utils';
 export { useAuthenticationHoc } from './Authentication';
