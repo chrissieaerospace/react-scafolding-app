@@ -9,6 +9,7 @@
     "test": "jest",
     "lint": "eslint .",
     "rename": "npx react-native-rename",
+    "build": "npx jetify && cd android && ./gradlew clean && ./gradlew assembleRelease && open app/build/outputs/apk/release",
     "pod-install": "cd ios && npx  pod install && cd .."
   },
   "dependencies": {
