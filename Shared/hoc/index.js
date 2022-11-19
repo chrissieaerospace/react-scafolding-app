@@ -13,3 +13,4 @@ export {
 export { CustomError } from './utils';
 export { useAuthenticationHoc } from './Authentication';
 export { useDashboardHoc } from './Dashboard';
+export { useGlobalHoc } from './Global';
