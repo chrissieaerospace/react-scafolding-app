@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "rename": "npx react-native-rename",
     "build": "npx jetify && cd android && ./gradlew clean && ./gradlew assembleRelease && open app/build/outputs/apk/release",
-    "pod-install": "cd ios && npx  pod install && cd .."
+    "pod-install": "cd ios && npx  pod install && cd ..",
+    "link-asset": "npx react-native-asset"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.10",
